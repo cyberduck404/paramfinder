@@ -5,7 +5,7 @@ import logging
 import colorama
 from colorama import Fore, Style
 from urllib.parse import urlparse, parse_qs, urlencode
-from core.http import fetch
+from .core.http import fetch
 
 
 HARDCODED_EXTENSIONS = [".jpg", ".jpeg", ".png", ".gif", ".pdf", ".svg", ".json", ".css", ".js", ".webp", ".woff", ".woff2", ".eot", ".ttf", ".otf", ".mp4", ".txt"]
