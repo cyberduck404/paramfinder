@@ -24,7 +24,7 @@ p.add_argument("-l", "--list", help="File containing a list of domain names.")
 p.add_argument('-x', "--proxy", help="Set the proxy address for web requests.")
 p.add_argument("-s", "--stream", action="store_true", help="Stream URLs on the terminal.")
 p.add_argument("-p", "--placeholder", help="placeholder for parameter values", default="FUZZ")
-p.add_argument('-t', '--timeout', default=10, type=int, help='Timeout for avoiding ratelimit of wayback machine')
+p.add_argument('-r', '--ratelimit', default=5, type=int, help='Ratelimit for wayback machine')
 args = p.parse_args()
 
 
@@ -61,15 +61,13 @@ def main():
         os.makedirs(results_dir)
 
     for idx, domain in enumerate(domains):
-        time.sleep(args.timeout)
+        time.sleep(args.ratelimit)
         logging.info(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} [{idx}] Fetching URLs for {Fore.CYAN + domain + Style.RESET_ALL}")
         resp = fetch(domain, args.proxy)
         if not resp:
             continue
         urls = resp.text.split()
         logging.info(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} [{idx}] Found {Fore.GREEN}{len(urls)}{Style.RESET_ALL} URLs for {Fore.CYAN + domain + Style.RESET_ALL}")
-        if not len(urls):
-            continue
         cleaned_urls = set()
         for url in urls:
             cleaned_url = clean_url(url)
