@@ -17,7 +17,7 @@ setup(
     license='MIT',
     author='cyberduck404',
     author_email='',
-    description='',
+    description='Dig parameters from wayback machine',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown'
 )
