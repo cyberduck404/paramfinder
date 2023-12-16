@@ -2,6 +2,7 @@
 import os, sys
 import argparse
 import logging
+import time
 import colorama
 from colorama import Fore, Style
 from urllib.parse import urlparse, parse_qs, urlencode
@@ -60,7 +61,7 @@ def main():
 
     for domain in domains:
         logging.info(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Fetching URLs for {Fore.CYAN + domain + Style.RESET_ALL}")
-        resp = fetch(domain, extensions, args.proxy, args.placeholder)
+        resp = fetch(domain, args.proxy)
         if not resp:
             continue
         urls = resp.text.split()
@@ -78,8 +79,9 @@ def main():
         cleaned_urls = list(cleaned_urls)
         logging.info(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Found {Fore.GREEN}{len(cleaned_urls)}{Style.RESET_ALL} URLs after cleaning")
 
+        if not len(cleaned_urls):
+            continue
         result_file = os.path.join(results_dir, f"{domain}.txt")
-
         with open(result_file, "w") as f:
             for url in cleaned_urls:
                 if '?' in url:
@@ -87,6 +89,7 @@ def main():
                     if args.stream:
                         sys.stdout.write(f'{url}\n')
         logging.info(f"{Fore.YELLOW}[INFO]{Style.RESET_ALL} Saved cleaned URLs to {Fore.CYAN + result_file + Style.RESET_ALL}")
+        time.sleep(4)
 
 
 if __name__ == '__main__':
